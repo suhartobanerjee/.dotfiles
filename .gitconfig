@@ -1,0 +1,13 @@
+[credential]
+	helper = cache
+[color]
+	ui = true
+[user]
+	name = Suharto Banerjee
+    email = suharto.banerjee@mdc-berlin.de
+[init]
+	defaultBranch = main
+[core]
+	editor = nvim
+[pull]
+	rebase = false
