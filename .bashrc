@@ -37,10 +37,12 @@ alias cls='clear'
 
 
 # Function to login to the compute node with variable cores and mem
-slogin() { srun --nodes=1 --ntasks=1 --cpus-per-task=$1 --mem=${2}G --pty bash; }
+slogin() { srun --ntasks=1 --cpus-per-task=$1 --mem=${2}G --pty bash; }
+
+sloginGPU() { srun --gres=gpu:tesla:$1 --partition gpu --ntasks=$2 --mem=${3}G --pty bash; }
 
 # function to login when time is needed
-sloginTime() { srun --nodes=1 --ntasks=1 --cpus-per-task=$1 --mem=${2}G --time=$3 --pty bash; }
+sloginTime() { srun --nodes=1 --ntasks=$1 --mem=${2}G --time=$3 --pty bash; }
 
 
 # Function to login to the compute node with variable cores and mem
@@ -66,6 +68,7 @@ alias specTime="sloginTime $1 $2 $3"
 # x11 forwarding
 alias specx="sloginx $1 $2 2-00"
 
+alias specgpu="sloginGPU $1 $2 $3"
 
 # Creating aliases to move to imp dir
 alias gscratch="cd /fast/groups/${GROUP}/scratch/suharto_tmp"
@@ -78,9 +81,11 @@ alias swork="cd /fast/work/users/${L_NAME}/"
 
 
 # checking the job resources
-job_status() { sacct --format=JobID,Start,End,Elapsed,Partition,REQCPUS,State,ALLOCTRES%30 -j $1; }
+job_status() { sacct --format=JobID,Elapsed,ReqCPUS,ReqMem -j $1; }
 alias jstat="job_status $1"
 alias cjstat="job_status $SLURM_JOB_ID"
+alias gpustatus="squeue | grep -iwE 'JOBID|gpu'"
+alias blockedgpus='gpustatus | grep hpc | wc -l'
 
 
 # storing the absolute path of imp folders
