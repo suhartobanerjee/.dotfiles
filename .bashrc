@@ -1,4 +1,3 @@
-# .bashrc
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
@@ -10,30 +9,32 @@ fi
 
 # env variables
 export MY_NAME=suharto
-export L_NAME=sbanerj_m
+export L_NAME=sbanerj
 export GROUP=ag_sanders
 export MY_EMAIL=suharto.banerjee@mdc-berlin.de
-export TMPDIR=/fast/users/$L_NAME/scratch/TMPDIR
+export TMPDIR=/fast/AG_Sanders/suharto/TMPDIR
 export PAGER=less
+export GUIX_PROFILE="/home/sbanerj/.config/guix/current"
 
 
 
 
 # Lazy aliases
 alias v='vim'
-alias e='~/work/squashfs-root/AppRun'
-alias nvim='~/work/squashfs-root/AppRun'
+alias e='AppRun'
+alias nvim='AppRun'
 alias l='less'
 alias t='tree -L 1'
 alias tt='tree -L 2'
 alias ttt='tree -L 3'
-alias la="ls -alh"
+alias la="ls -alh --color=auto"
 alias u="cd .."
 alias cpr='cp -r'
 alias grepi='grep -i'
 alias dush='du -sh'
 alias ncpus='echo $SLURM_CPUS_PER_TASK'
 alias cls='clear'
+alias ls='ls --color=auto'
 
 
 # Function to login to the compute node with variable cores and mem
@@ -48,6 +49,20 @@ sloginTime() { srun --nodes=1 --ntasks=$1 --mem=${2}G --time=$3 --pty bash; }
 # Function to login to the compute node with variable cores and mem
 # with x11 forwarding
 sloginx() { srun --nodes=1 --ntasks=1 --cpus-per-task=$1 --mem=${2}G --time=$3 --pty --x11 bash; }
+
+# gridEngine intact job submission
+qrspec() {
+    qrsh -now no -pe smp $1 -l m_mem_free=${2}G
+}
+
+bih_max_transfer() {
+    rsync -avPe "ssh -i ~/.ssh/bih_private_key" "sbanerj_m@hpc-transfer-1.cubi.bihealth.org:$1" "$2"
+}
+
+max_bih_transfer() {
+    rsync -avPe "ssh -i ~/.ssh/bih_private_key" "$1" "sbanerj_m@hpc-transfer-1.cubi.bihealth.org:$2"
+}
+
 
 # login to do basic stuff - 4 cores and 8gb of ram
 alias base="slogin 8 16" 
@@ -128,7 +143,9 @@ export PATH=$PATH:/fast/work/users/sbanerj_m/miniconda/envs/numbat/lib/R/library
 export PATH="/fast/groups/ag_sanders/work/tools/cellranger-7.1.0:$PATH"
 export PATH="$g_tools/sra-toolkit/sratoolkit.3.0.1-centos_linux64/bin:$PATH"
 export PATH="/fast/groups/ag_sanders/work/tools/CrushTunnel:$PATH"
-
+export PATH="/home/sbanerj/.guix-profile/bin:$PATH"
+export PATH="/home/sbanerj/.config/guix/current/bin:$PATH"
+export PATH="/home/sbanerj/suh/squashfs-root:$PATH"
 
 # export environmental variables
 #export TERM=xterm
@@ -158,20 +175,20 @@ esac
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/fast/work/users/sbanerj_m/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/sbanerj/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/fast/work/users/sbanerj_m/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/fast/work/users/sbanerj_m/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/sbanerj/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/sbanerj/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/fast/work/users/sbanerj_m/miniconda3/bin:$PATH"
+        export PATH="/home/sbanerj/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
 
-if [ -f "/fast/work/users/sbanerj_m/miniconda3/etc/profile.d/mamba.sh" ]; then
-    . "/fast/work/users/sbanerj_m/miniconda3/etc/profile.d/mamba.sh"
+if [ -f "/home/sbanerj/miniconda3/etc/profile.d/mamba.sh" ]; then
+    . "/home/sbanerj/miniconda3/etc/profile.d/mamba.sh"
 fi
 # <<< conda initialize <<<
 
