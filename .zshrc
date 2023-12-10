@@ -46,7 +46,7 @@ max_unmount ()
 # Functions to copy data from cluster to local
 bih_local_copy ()
 {
-    rsync -avPe ssh $LOGIN_BIH@hpc-transfer-1.cubi.bihealth.org:$1 $2
+    rsync -avPe ssh $LOGIN_BIH@hpc-transfer-2.cubi.bihealth.org:$1 $2
 }
 
 max_local_copy ()
