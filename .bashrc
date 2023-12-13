@@ -43,7 +43,7 @@ qrspec() {
 }
 
 bih_max_transfer() {
-    rsync -avPe "ssh -i ~/.ssh/bih_private_key" "sbanerj_m@hpc-transfer-1.cubi.bihealth.org:$1" "$2"
+    rsync -avPe "ssh -i ~/.ssh/bih_private_key" "sbanerj_m@hpc-transfer-2.cubi.bihealth.org:$1" "$2"
 }
 
 max_bih_transfer() {
@@ -96,10 +96,6 @@ else
     fi
 fi
 unset __conda_setup
-
-if [ -f "/home/sbanerj/miniconda3/etc/profile.d/mamba.sh" ]; then
-    . "/home/sbanerj/miniconda3/etc/profile.d/mamba.sh"
-fi
 # <<< conda initialize <<<
 
 
