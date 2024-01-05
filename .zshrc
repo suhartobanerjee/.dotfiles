@@ -22,6 +22,11 @@ alias kmaxlogin="kitty +kitten ssh ${LOGIN_MDC}@max-login.mdc-berlin.net"
 # sbanerj_m can access. Be careful with this
 bih_mount ()
 {
+    # unmounting if already mounted
+    if [[ $(mount | grep BIH_CLUSTER) ]]; then
+       bih_unmount 
+    fi
+
     sshfs -o follow_symlinks $LOGIN_BIH@hpc-transfer-2.cubi.bihealth.org:/fast/users/sbanerj_m/ ~/PhD_SandersLab/BIH_CLUSTER -o volname=BIH_CLUSTER -o defer_permissions
 }
 
@@ -34,6 +39,11 @@ bih_unmount ()
 # max cluster mount and unmounting functions
 max_mount ()
 {
+    # unmounting if already mounted
+    if [[ $(mount | grep MAX_CLUSTER) ]]; then
+       max_unmount 
+    fi
+
     sshfs -o follow_symlinks $LOGIN_MDC@max-login1.mdc-berlin.net:/home/sbanerj/ ~/PhD_SandersLab/MAX_CLUSTER -o volname=MAX_CLUSTER -o defer_permissions
 }
 
