@@ -4,8 +4,8 @@ export LOGIN_MDC=sbanerj
 export LOGIN_BIH=sbanerj_m
 export EMAIL=suharto.banerjee@mdc-berlin.de
 
-#alias bihlogin1="ssh -A -t -l $LOGIN_BIH hpc-login-1.cubi.bihealth.org"
-#alias bihlogin2="ssh -A -t -l $LOGIN_BIH hpc-login-2.cubi.bihealth.org"
+alias bihlogin1="ssh -A -t -l $LOGIN_BIH hpc-login-1.cubi.bihealth.org"
+alias bihlogin2="ssh -A -t -l $LOGIN_BIH hpc-login-2.cubi.bihealth.org"
 #alias bihx1="ssh -X -l $LOGIN_BIH hpc-login-1.cubi.bihealth.org"
 #alias bihx2="ssh -X -l $LOGIN_BIH hpc-login-2.cubi.bihealth.org"
 alias maxlogin="ssh ${LOGIN_MDC}@max-login.mdc-berlin.net"
