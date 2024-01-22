@@ -34,16 +34,22 @@ alias grepi='grep -i'
 alias dush='du -sh'
 alias cls='clear'
 alias ls='ls --color=auto'
+alias mtop='htop -u $L_NAME'
 
 
 
 # gridEngine intact job submission
 qrspec() {
-    qrsh -now no -pe smp $1 -l m_mem_free=${2}G
+    qrsh -now no -pe smp ${1:-2} -l m_mem_free=${2:-8}G
+}
+
+# to get a gpu job
+qrspecGPU() {
+    qrsh -l gpu=$1 -l cuda12 -now no -pe smp ${2:-2} -l m_mem_free=${3:-8}G
 }
 
 bih_max_transfer() {
-    rsync -avPe "ssh -i ~/.ssh/bih_private_key" "sbanerj_m@hpc-transfer-2.cubi.bihealth.org:$1" "$2"
+    rsync -avPe "ssh -i ~/.ssh/bih_private_key" "sbanerj_m@hpc-transfer-1.cubi.bihealth.org:$1" "$2"
 }
 
 max_bih_transfer() {
