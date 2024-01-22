@@ -64,6 +64,17 @@ max_local_copy ()
     rsync -avPe ssh $LOGIN_MDC@max-login1.mdc-berlin.net:$1 $2
 }
 
+# Functions to copy data from local to cluster
+local_bih_copy ()
+{
+    rsync -avPe ssh $1 $LOGIN_BIH@hpc-transfer-2.cubi.bihealth.org:$2
+}
+
+local_max_copy ()
+{
+    rsync -avPe ssh $1 $LOGIN_MDC@max-login1.mdc-berlin.net:$2
+}
+
 # login to ssh "jail" outside MDC. Then run 1. or 2. above to log into the cluster 
 alias jail="eval '$(ssh-agent -s)' ; ssh-add ; ssh -A -t -l ${LOGIN_MDC} ssh1.mdc-berlin.de"
 
