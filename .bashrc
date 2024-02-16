@@ -34,41 +34,23 @@ alias grepi='grep -i'
 alias dush='du -sh'
 alias ncpus='echo $SLURM_CPUS_PER_TASK'
 alias cls='clear'
+alias mtop='htop -u $L_NAME'
 
 
 # Function to login to the compute node with variable cores and mem
-slogin() { srun --ntasks=1 --cpus-per-task=$1 --mem=${2}G --pty bash; }
+slogin() { srun --ntasks=1 --cpus-per-task=${1:-2} --mem=${2:-8}G --pty bash; }
 
 sloginGPU() { srun --gres=gpu:tesla:$1 --partition gpu --ntasks=$2 --mem=${3}G --pty bash; }
 
 # function to login when time is needed
-sloginTime() { srun --nodes=1 --ntasks=$1 --mem=${2}G --time=$3 --pty bash; }
+sloginTime() { srun --nodes=1 --ntasks=${1:-2} --mem=${2:-8}G --time=$3 --pty bash; }
 
 
 # Function to login to the compute node with variable cores and mem
 # with x11 forwarding
 sloginx() { srun --nodes=1 --ntasks=1 --cpus-per-task=$1 --mem=${2}G --time=$3 --pty --x11 bash; }
 
-# login to do basic stuff - 4 cores and 8gb of ram
-alias base="slogin 8 16" 
 
-
-# login to do basic stuff - 4 cores and 8gb of ram
-# x11 forwarding
-alias basex="sloginx 8 16 2-00" 
-
-
-# launching srun with desired specs
-alias spec="slogin $1 $2"
-
-# to login with time bounds
-alias specTime="sloginTime $1 $2 $3"
-
-# launching srun with desired specs
-# x11 forwarding
-alias specx="sloginx $1 $2 2-00"
-
-alias specgpu="sloginGPU $1 $2 $3"
 
 # Creating aliases to move to imp dir
 alias gscratch="cd /fast/groups/${GROUP}/scratch/suharto_tmp"
