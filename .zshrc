@@ -97,6 +97,8 @@ alias cls='clear'
 # Making neovim the default editor
 export EDITOR="nvim"
 
+autoload -U colors && colors
+PS1="%{$fg[cyan]%}%n%{$reset_color%}@%{$fg[magenta]%}%m %{$fg[green]%}%(5~|%-1~/.../%3~|%4~) %{$reset_color%}%% "
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -112,7 +114,3 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
-
-
-autoload -U colors && colors
-PS1="%{$fg[cyan]%}%n%{$reset_color%}@%{$fg[magenta]%}%m %{$fg[green]%}%(5~|%-1~/.../%3~|%4~) %{$reset_color%}%% "
