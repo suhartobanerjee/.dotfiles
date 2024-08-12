@@ -56,12 +56,12 @@ max_unmount ()
 # Functions to copy data from cluster to local
 bih_local_copy ()
 {
-    rsync -avPe ssh $LOGIN_BIH@hpc-transfer-2.cubi.bihealth.org:$1 $2
+    rsync -avP --no-links -e ssh $LOGIN_BIH@hpc-transfer-2.cubi.bihealth.org:$1 $2
 }
 
 max_local_copy ()
 {
-    rsync -avPe ssh $LOGIN_MDC@max-login1.mdc-berlin.net:$1 $2
+    rsync -avP --no-links -e ssh $LOGIN_MDC@max-login1.mdc-berlin.net:$1 $2
 }
 
 # Functions to copy data from local to cluster
@@ -93,6 +93,13 @@ alias u='cd ..'
 alias cpr='cp -r'
 alias s='kitty +kitten'
 alias cls='clear'
+
+# activate conda env and export a global var to capture
+# in nvim
+conda_activate () {
+    conda activate $1
+    export CDE=$(echo $CONDA_DEFAULT_ENV)
+}
 
 # Making neovim the default editor
 export EDITOR="nvim"
