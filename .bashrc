@@ -87,9 +87,32 @@ alias myjobs="squeue --me"
 alias myquota="bih-gpfs-report-quota user ${L_NAME}"
 alias ourquota="bih-gpfs-report-quota group ${GROUP}"
 
-alias del="recycle_items"
+#alias del="recycle_items"
 alias touchy="find . -type f -exec touch {} \;"
 
+
+function deletethis() {
+    filename=$(basename $1)
+    deldir=~/scratch/deletethis/$(date +%Y%m%d_%H%M%S_$filename)
+    mkdir -p $deldir
+    for myfile in "$@"
+    do
+        echo "deleting $myfile"
+        mv $myfile $deldir
+    done
+}
+
+
+function undodeletethis(){
+    mydir=$(ls -t ~/scratch/deletethis | head -n1)
+    for myfile in ~/scratch/deletethis/${mydir}/*
+    do
+        myname=$(basename ${myfile})
+        echo "restoring ${myname}"
+        mv ${myfile} .
+    done
+    rmdir ~/scratch/deletethis/${mydir}
+}
 
 
 recycle_items() {
@@ -125,6 +148,12 @@ PS1='\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;35m\]\h:\[\033[1;32m\]$( [ "$PWD" =
 alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 
+# activate conda env and export a global var to capture
+# in nvim
+conda_activate () {
+    conda activate $1
+    export CDE=$(echo $CONDA_DEFAULT_ENV)
+}
 
 
 # Make Conda available upon login
