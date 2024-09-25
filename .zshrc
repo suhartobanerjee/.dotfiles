@@ -27,7 +27,7 @@ bih_mount ()
        bih_unmount 
     fi
 
-    sshfs -o follow_symlinks $LOGIN_BIH@hpc-transfer-2.cubi.bihealth.org:/fast/users/sbanerj_m/ ~/PhD_SandersLab/BIH_CLUSTER -o volname=BIH_CLUSTER -o defer_permissions
+    sshfs -o follow_symlinks $LOGIN_BIH@hpc-transfer-2.cubi.bihealth.org:/data/cephfs-1/home/users/sbanerj_m ~/PhD_SandersLab/BIH_CLUSTER -o volname=BIH_CLUSTER -o defer_permissions
 }
 
 bih_unmount ()
