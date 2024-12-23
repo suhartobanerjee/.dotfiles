@@ -11,9 +11,9 @@ fi
 # env variables
 export MY_NAME=suharto
 export L_NAME=sbanerj_m
-export GROUP=ag_sanders
+export GROUP=sanders
 export MY_EMAIL=suharto.banerjee@mdc-berlin.de
-export TMPDIR=/fast/users/$L_NAME/scratch/TMPDIR
+export TMPDIR=/data/cephfs-1/scratch/groups/sanders/users/sbanerj_m/TMPDIR
 export PAGER=less
 
 
@@ -21,8 +21,7 @@ export PAGER=less
 
 # Lazy aliases
 alias v='vim'
-alias e='~/work/squashfs-root/AppRun'
-alias nvim='~/work/squashfs-root/AppRun'
+alias e='nvim'
 alias l='less'
 alias t='tree -L 1'
 alias tt='tree -L 2'
@@ -40,6 +39,7 @@ alias mtop='htop -u $L_NAME'
 # Function to login to the compute node with variable cores and mem
 slogin() { srun --ntasks=1 --cpus-per-task=${1:-2} --mem=${2:-8}G --pty bash; }
 
+# function to login when GPU is needed
 sloginGPU() { srun --gres=gpu:tesla:$1 --partition gpu --ntasks=$2 --mem=${3}G --pty bash; }
 
 # function to login when time is needed
@@ -51,15 +51,25 @@ sloginTime() { srun --nodes=1 --ntasks=${1:-2} --mem=${2:-8}G --time=$3 --pty ba
 sloginx() { srun --nodes=1 --ntasks=1 --cpus-per-task=$1 --mem=${2}G --time=$3 --pty --x11 bash; }
 
 
+# storing the absolute path of imp folders
+# this is based on the symlinks in my
+# home dir
+export g_scratch=$(readlink ~/my_gscratch)
+export g_data=$(readlink ~/group_data)
+export g_prj=$(readlink ~/my_gprojects)
+export g_tools=$(readlink ~/group_tools)
+
+export s_work=$(readlink ~/work)
+export dig_kar=$(readlink ~/sanders-digital-karyotype)
 
 # Creating aliases to move to imp dir
-alias gscratch="cd /fast/groups/${GROUP}/scratch/suharto_tmp"
-alias gdata="cd /fast/groups/${GROUP}/work/data"
-alias gprj="cd /fast/groups/${GROUP}/work/projects/suharto"
-alias gtools="cd /fast/groups/${GROUP}/work/tools"
+alias gscratch="cd $g_scratch"
+alias gdata="cd $g_data"
+alias gprj="cd $g_prj"
+alias gtools="cd $g_tools"
 
-alias sscratch="cd /fast/scratch/users/${L_NAME}/"
-alias swork="cd /fast/work/users/${L_NAME}/"
+alias swork="cd $s_work"
+alias digkar="cd $dig_kar"
 
 
 # checking the job resources
@@ -70,14 +80,6 @@ alias gpustatus="squeue | grep -iwE 'JOBID|gpu'"
 alias blockedgpus='gpustatus | grep hpc | wc -l'
 
 
-# storing the absolute path of imp folders
-export g_scratch=/fast/groups/${GROUP}/scratch/${MY_NAME}_tmp
-export g_data=/fast/groups/${GROUP}/work/data
-export g_prj=/fast/groups/${GROUP}/work/projects/${MY_NAME}
-export g_tools=/fast/groups/${GROUP}/work/tools
-
-export s_scratch=/fast/scratch/users/${L_NAME}/
-export s_work=/fast/work/users/${L_NAME}/
 
 # list your current jobs on the cluster
 alias myjobs="squeue --me"
@@ -128,15 +130,18 @@ recycle_items() {
 
 
 # Path variables
-export PATH=$PATH:/fast/groups/ag_sanders/work/tools/eagle/Eagle_v2.4.1/
-export PATH=$PATH:/fast/work/users/sbanerj_m/miniconda/envs/numbat/lib/R/library/numbat/bin/
-export PATH="/fast/groups/ag_sanders/work/tools/cellranger-7.1.0:$PATH"
-export PATH="$g_tools/sra-toolkit/sratoolkit.3.0.1-centos_linux64/bin:$PATH"
-export PATH="/fast/groups/ag_sanders/work/tools/CrushTunnel:$PATH"
+# Will change the paths if required. Migrated
+# export PATH=$PATH:/fast/groups/ag_sanders/work/tools/eagle/Eagle_v2.4.1/
+# export PATH=$PATH:/fast/work/users/sbanerj_m/miniconda/envs/numbat/lib/R/library/numbat/bin/
+# export PATH="/fast/groups/ag_sanders/work/tools/cellranger-7.1.0:$PATH"
+export PATH="${g_tools}/sra-toolkit/sratoolkit.3.0.1-centos_linux64/bin:$PATH"
+export PATH="${g_tools}/CrushTunnel:$PATH"
+export PATH="/data/cephfs-1/work/groups/sanders/users/sbanerj_m/nvim-linux64/bin:$PATH"
 
 
 # export environmental variables
-#export TERM=xterm
+export TERM=xterm-256color
+export LC_ALL=C.utf8
 #export TERM=tmux
 
 # prettify the terminal prompt with colors
@@ -161,29 +166,30 @@ case "${SLURMD_NODENAME-${HOSTNAME}}" in
     login-*)
         ;;
     *)
-        export PATH=$HOME/work/miniconda3/condabin:$PATH
+        export PATH=/data/cephfs-1/home/users/sbanerj_m/work/miniforge3/condabin:$PATH
         ;;
 esac
 
 
 
+
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/fast/work/users/sbanerj_m/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('/data/cephfs-1/home/users/sbanerj_m/work/miniforge3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/fast/work/users/sbanerj_m/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/fast/work/users/sbanerj_m/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "/data/cephfs-1/home/users/sbanerj_m/work/miniforge3/etc/profile.d/conda.sh" ]; then
+        . "/data/cephfs-1/home/users/sbanerj_m/work/miniforge3/etc/profile.d/conda.sh"
     else
-        export PATH="/fast/work/users/sbanerj_m/miniconda3/bin:$PATH"
+        export PATH="/data/cephfs-1/home/users/sbanerj_m/work/miniforge3/bin:$PATH"
     fi
 fi
 unset __conda_setup
 
-if [ -f "/fast/work/users/sbanerj_m/miniconda3/etc/profile.d/mamba.sh" ]; then
-    . "/fast/work/users/sbanerj_m/miniconda3/etc/profile.d/mamba.sh"
+if [ -f "/data/cephfs-1/home/users/sbanerj_m/work/miniforge3/etc/profile.d/mamba.sh" ]; then
+    . "/data/cephfs-1/home/users/sbanerj_m/work/miniforge3/etc/profile.d/mamba.sh"
 fi
 # <<< conda initialize <<<
-
 
