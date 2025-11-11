@@ -13,8 +13,9 @@ export MY_NAME=suharto
 export L_NAME=sbanerj_m
 export GROUP=sanders
 export MY_EMAIL=suharto.banerjee@mdc-berlin.de
-export TMPDIR=/data/cephfs-1/scratch/groups/sanders/users/sbanerj_m/TMPDIR
-export PAGER=less
+export TMPDIR=/data/cephfs-1/scratch/projects/sanders-digital-karyotype/TMPDIR
+export SYSTEMD_PAGER=/usr/bin/less
+export PAGER=/usr/bin/less
 
 
 
@@ -34,6 +35,7 @@ alias dush='du -sh'
 alias ncpus='echo $SLURM_CPUS_PER_TASK'
 alias cls='clear'
 alias mtop='htop -u $L_NAME'
+alias pwd="realpath ."
 
 
 # Function to login to the compute node with variable cores and mem
@@ -90,7 +92,7 @@ alias myquota="bih-gpfs-report-quota user ${L_NAME}"
 alias ourquota="bih-gpfs-report-quota group ${GROUP}"
 
 #alias del="recycle_items"
-alias touchy="find . -type f -exec touch {} \;"
+alias touchy="find . -exec touch {} \;"
 
 
 function deletethis() {
@@ -136,12 +138,15 @@ recycle_items() {
 # export PATH="/fast/groups/ag_sanders/work/tools/cellranger-7.1.0:$PATH"
 export PATH="${g_tools}/sra-toolkit/sratoolkit.3.0.1-centos_linux64/bin:$PATH"
 export PATH="${g_tools}/CrushTunnel:$PATH"
-export PATH="/data/cephfs-1/work/groups/sanders/users/sbanerj_m/nvim-linux64/bin:$PATH"
+export PATH="/data/cephfs-1/work/groups/sanders/users/sbanerj_m/nvim-linux-x86_64/bin:$PATH"
+export PATH="/data/cephfs-1/work/groups/sanders/users/sbanerj_m/ripgrep-14.1.1-x86_64-unknown-linux-musl:$PATH"
+export PATH="/data/cephfs-1/home/users/sbanerj_m/work/fd-v10.2.0-x86_64-unknown-linux-gnu:$PATH"
 
 
 # export environmental variables
 export TERM=xterm-256color
 export LC_ALL=C.utf8
+export LANG=C.utf8
 #export TERM=tmux
 
 # prettify the terminal prompt with colors
@@ -176,20 +181,20 @@ esac
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/data/cephfs-1/home/users/sbanerj_m/work/miniforge3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('/data/cephfs-1/work/groups/sanders/users/sbanerj_m/miniforge3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/data/cephfs-1/home/users/sbanerj_m/work/miniforge3/etc/profile.d/conda.sh" ]; then
-        . "/data/cephfs-1/home/users/sbanerj_m/work/miniforge3/etc/profile.d/conda.sh"
+    if [ -f "/data/cephfs-1/work/groups/sanders/users/sbanerj_m/miniforge3/etc/profile.d/conda.sh" ]; then
+        . "/data/cephfs-1/work/groups/sanders/users/sbanerj_m/miniforge3/etc/profile.d/conda.sh"
     else
-        export PATH="/data/cephfs-1/home/users/sbanerj_m/work/miniforge3/bin:$PATH"
+        export PATH="/data/cephfs-1/work/groups/sanders/users/sbanerj_m/miniforge3/bin:$PATH"
     fi
 fi
 unset __conda_setup
 
-if [ -f "/data/cephfs-1/home/users/sbanerj_m/work/miniforge3/etc/profile.d/mamba.sh" ]; then
-    . "/data/cephfs-1/home/users/sbanerj_m/work/miniforge3/etc/profile.d/mamba.sh"
+if [ -f "/data/cephfs-1/work/groups/sanders/users/sbanerj_m/miniforge3/etc/profile.d/mamba.sh" ]; then
+    . "/data/cephfs-1/work/groups/sanders/users/sbanerj_m/miniforge3/etc/profile.d/mamba.sh"
 fi
 # <<< conda initialize <<<
 
