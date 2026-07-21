@@ -6,38 +6,30 @@ export EMAIL=suharto.banerjee@mdc-berlin.de
 
 alias bihlogin1="ssh -A -t -l $LOGIN_BIH hpc-login-1.cubi.bihealth.org"
 alias bihlogin2="ssh -A -t -l $LOGIN_BIH hpc-login-2.cubi.bihealth.org"
-#alias bihx1="ssh -X -l $LOGIN_BIH hpc-login-1.cubi.bihealth.org"
-#alias bihx2="ssh -X -l $LOGIN_BIH hpc-login-2.cubi.bihealth.org"
 alias maxlogin="ssh ${LOGIN_MDC}@max-login.mdc-berlin.net"
-
-
-alias kbihlogin1="kitty +kitten ssh -A -t -l $LOGIN_BIH hpc-login-1.cubi.bihealth.org"
-alias kbihlogin2="kitty +kitten ssh -A -t -l $LOGIN_BIH hpc-login-2.cubi.bihealth.org"
-alias kbihx="kitty +kitten ssh -X -l $LOGIN_BIH hpc-login-1.cubi.bihealth.org"
-alias kmaxlogin="kitty +kitten ssh ${LOGIN_MDC}@max-login.mdc-berlin.net"
 
 
 ## Mounting clusters locally ##
 # defer permissions is to allow me to access folders only
 # sbanerj_m can access. Be careful with this
-bih_mount ()
+bihmount ()
 {
     # unmounting if already mounted
     if [[ $(mount | grep BIH_CLUSTER) ]]; then
        bih_unmount 
     fi
 
-    sshfs -o follow_symlinks $LOGIN_BIH@hpc-transfer-2.cubi.bihealth.org:/data/cephfs-1/home/users/sbanerj_m ~/PhD_SandersLab/BIH_CLUSTER -o volname=BIH_CLUSTER -o defer_permissions
+    sshfs -o follow_symlinks $LOGIN_BIH@hpc-transfer-1.cubi.bihealth.org:/data/cephfs-1/home/users/sbanerj_m ~/PhD_SandersLab/BIH_CLUSTER -o volname=BIH_CLUSTER -o defer_permissions
 }
 
-bih_unmount ()
+bihunmount ()
 {
     diskutil unmount force ~/PhD_SandersLab/BIH_CLUSTER
 }
 
 
 # max cluster mount and unmounting functions
-max_mount ()
+maxmount ()
 {
     # unmounting if already mounted
     if [[ $(mount | grep MAX_CLUSTER) ]]; then
@@ -47,7 +39,7 @@ max_mount ()
     sshfs -o follow_symlinks $LOGIN_MDC@max-login1.mdc-berlin.net:/home/sbanerj/ ~/PhD_SandersLab/MAX_CLUSTER -o volname=MAX_CLUSTER -o defer_permissions
 }
 
-max_unmount ()
+maxunmount ()
 {
     diskutil unmount force ~/PhD_SandersLab/MAX_CLUSTER
 }
@@ -56,7 +48,12 @@ max_unmount ()
 # Functions to copy data from cluster to local
 bih_local_copy ()
 {
-    rsync -avP --no-links -e ssh $LOGIN_BIH@hpc-transfer-2.cubi.bihealth.org:$1 $2
+    rsync -avP --no-links --partial -e ssh $LOGIN_BIH@hpc-transfer-1.cubi.bihealth.org:$1 $2
+}
+
+bih_local_mirror ()
+{
+    rsync -avP --delete --no-links --partial -e ssh $LOGIN_BIH@hpc-transfer-1.cubi.bihealth.org:$1 $2
 }
 
 max_local_copy ()
@@ -67,7 +64,7 @@ max_local_copy ()
 # Functions to copy data from local to cluster
 local_bih_copy ()
 {
-    rsync -avPe ssh $1 $LOGIN_BIH@hpc-transfer-2.cubi.bihealth.org:$2
+    rsync -avPe ssh $1 $LOGIN_BIH@hpc-transfer-1.cubi.bihealth.org:$2
 }
 
 local_max_copy ()
@@ -104,12 +101,16 @@ conda_activate () {
 # Making neovim the default editor
 export EDITOR="nvim"
 
+# Adding QT headers
+export PATH="/opt/homebrew/lib/QtWidgets.framework/Headers/:$PATH"
+export PATH="/opt/youtube-dlp/:$PATH"
+
 autoload -U colors && colors
-PS1="%{$fg[cyan]%}%n%{$reset_color%}@%{$fg[magenta]%}%m %{$fg[green]%}%(5~|%-1~/.../%3~|%4~) %{$reset_color%}%% "
+PS1="%{$fg[cyan]%}%n%{$reset_color%}@%{$fg[magenta]%}%m %{$fg[green]%}%(5~|%-1~/.../%3~|%4~) %{$reset_color%}% $ % "
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/sbanerj/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/Users/sbanerj/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
@@ -120,4 +121,21 @@ else
     fi
 fi
 unset __conda_setup
+
+if [ -f "/Users/sbanerj/miniconda3/etc/profile.d/mamba.sh" ]; then
+    . "/Users/sbanerj/miniconda3/etc/profile.d/mamba.sh"
+fi
 # <<< conda initialize <<<
+
+# >>> mamba initialize >>>
+# !! Contents within this block are managed by 'mamba shell init' !!
+export MAMBA_EXE='/Users/sbanerj/miniconda3/bin/mamba';
+export MAMBA_ROOT_PREFIX='/Users/sbanerj/miniconda3';
+__mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__mamba_setup"
+else
+    alias mamba="$MAMBA_EXE"  # Fallback on help from mamba activate
+fi
+unset __mamba_setup
+# <<< mamba initialize <<<
