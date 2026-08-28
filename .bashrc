@@ -14,8 +14,8 @@ export L_NAME=sbanerj_m
 export GROUP=sanders
 export MY_EMAIL=suharto.banerjee@mdc-berlin.de
 export TMPDIR=/data/cephfs-1/scratch/projects/sanders-digital-karyotype/TMPDIR
-export SYSTEMD_PAGER=/usr/bin/less
-export PAGER=/usr/bin/less
+# export SYSTEMD_PAGER=/usr/bin/less
+export PAGER=less
 
 
 
@@ -92,7 +92,12 @@ alias myquota="bih-gpfs-report-quota user ${L_NAME}"
 alias ourquota="bih-gpfs-report-quota group ${GROUP}"
 
 #alias del="recycle_items"
-alias touchy="find . -exec touch {} \;"
+function touchy() {
+    dt=$(date '+%F %T')
+    touch -d "$dt" /data/cephfs-1/scratch/projects/sanders-digital-karyotype/sequence_data/.keepdir
+    touch -d "$dt" $TMPDIR/.keepdir
+    fd . --type file --type dir --type symlink | xargs -I% touch -h -d "$dt" %
+}
 
 
 function deletethis() {
@@ -165,16 +170,17 @@ conda_activate () {
     export CDE=$(echo $CONDA_DEFAULT_ENV)
 }
 
+# Conda root directory
+conda_dir=/data/cephfs-1/work/projects/sanders-digital-karyotype/miniforge3
 
 # Make Conda available upon login
 case "${SLURMD_NODENAME-${HOSTNAME}}" in
     login-*)
         ;;
     *)
-        export PATH=/data/cephfs-1/home/users/sbanerj_m/work/miniforge3/condabin:$PATH
+        export PATH=${conda_dir}/condabin:$PATH
         ;;
 esac
-
 
 
 
