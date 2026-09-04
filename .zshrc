@@ -16,7 +16,7 @@ bihmount ()
 {
     # unmounting if already mounted
     if [[ $(mount | grep BIH_CLUSTER) ]]; then
-       bih_unmount 
+       bihunmount 
     fi
 
     sshfs -o follow_symlinks $LOGIN_BIH@hpc-transfer-1.cubi.bihealth.org:/data/cephfs-1/home/users/sbanerj_m ~/PhD_SandersLab/BIH_CLUSTER -o volname=BIH_CLUSTER -o defer_permissions
@@ -121,21 +121,4 @@ else
     fi
 fi
 unset __conda_setup
-
-if [ -f "/Users/sbanerj/miniconda3/etc/profile.d/mamba.sh" ]; then
-    . "/Users/sbanerj/miniconda3/etc/profile.d/mamba.sh"
-fi
 # <<< conda initialize <<<
-
-# >>> mamba initialize >>>
-# !! Contents within this block are managed by 'mamba shell init' !!
-export MAMBA_EXE='/Users/sbanerj/miniconda3/bin/mamba';
-export MAMBA_ROOT_PREFIX='/Users/sbanerj/miniconda3';
-__mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__mamba_setup"
-else
-    alias mamba="$MAMBA_EXE"  # Fallback on help from mamba activate
-fi
-unset __mamba_setup
-# <<< mamba initialize <<<
