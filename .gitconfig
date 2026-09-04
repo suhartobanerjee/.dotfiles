@@ -1,5 +1,5 @@
 [credential]
-	helper = cache
+	helper = osxkeychain
 [color]
 	ui = true
 [user]
