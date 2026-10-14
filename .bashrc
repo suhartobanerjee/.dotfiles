@@ -96,7 +96,7 @@ function touchy() {
     dt=$(date '+%F %T')
     touch -d "$dt" /data/cephfs-1/scratch/projects/sanders-digital-karyotype/sequence_data/.keepdir
     touch -d "$dt" $TMPDIR/.keepdir
-    fd . --type file --type dir --type symlink | xargs -I% touch -h -d "$dt" %
+    fd . --type file --type dir --type symlink | xargs -I% touch -hd "$dt" %
 }
 
 
