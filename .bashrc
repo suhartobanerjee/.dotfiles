@@ -23,10 +23,12 @@ export PAGER=less
 # Lazy aliases
 alias v='vim'
 alias e='nvim'
+alias less="less -R"
 alias l='less'
 alias t='tree -L 1'
 alias tt='tree -L 2'
 alias ttt='tree -L 3'
+alias ls="ls --color=always"
 alias la="ls -alh"
 alias u="cd .."
 alias cpr='cp -r'
@@ -36,6 +38,7 @@ alias ncpus='echo $SLURM_CPUS_PER_TASK'
 alias cls='clear'
 alias mtop='htop -u $L_NAME'
 alias pwd="realpath ."
+alias wcl="wc -l"
 
 
 # Function to login to the compute node with variable cores and mem
@@ -146,6 +149,7 @@ export PATH="${g_tools}/CrushTunnel:$PATH"
 export PATH="/data/cephfs-1/work/groups/sanders/users/sbanerj_m/nvim-linux-x86_64/bin:$PATH"
 export PATH="/data/cephfs-1/work/groups/sanders/users/sbanerj_m/ripgrep-14.1.1-x86_64-unknown-linux-musl:$PATH"
 export PATH="/data/cephfs-1/home/users/sbanerj_m/work/fd-v10.2.0-x86_64-unknown-linux-gnu:$PATH"
+export PATH="/data/cephfs-1/work/groups/sanders/users/sbanerj_m/bat-v0.26.1-x86_64-unknown-linux-gnu:$PATH"
 
 
 # export environmental variables
